@@ -34,7 +34,7 @@ import com.poscoict.auth.services.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/sign")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -74,7 +74,6 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		System.out.println("ddddd");
 		if (userRepository.existsById(signUpRequest.getId())) {
 			return ResponseEntity
 					.badRequest()
