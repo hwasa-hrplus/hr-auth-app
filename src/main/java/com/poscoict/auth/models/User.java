@@ -21,21 +21,19 @@ import javax.validation.constraints.Size;
 @Table(	name = "users", 
 		uniqueConstraints = { 
 			@UniqueConstraint(columnNames = "username"),
-			@UniqueConstraint(columnNames = "id"),
-			@UniqueConstraint(columnNames = "email")
+			@UniqueConstraint(columnNames = "id")
 		})
 public class User {
 	@Id
 	private Long id;
 
 	@NotBlank
-	@Size(max = 20)
-	private String username;
-
-	@NotBlank
 	@Size(max = 50)
 	@Email
-	private String email;
+	private String username;	
+	
+	@NotBlank
+	private String korName;
 
 	@NotBlank
 	@Size(max = 120)
@@ -50,13 +48,21 @@ public class User {
 	public User() {
 	}
 
-	public User(String username, String email, String password, Long id) {
+	public User(String username, String password, String korName, Long id) {
 		this.username = username;
-		this.email = email;
+		this.korName = korName;
 		this.password = password;
 		this.id = id;
 	}
 
+	public String getKorName() {
+		return korName;
+	}
+
+	public void setKorName(String korName) {
+		this.korName = korName;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -71,14 +77,6 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {
