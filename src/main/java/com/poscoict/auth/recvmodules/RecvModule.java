@@ -45,16 +45,15 @@ class RecvModule {
 	
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(
-					name = "Exchange", type = ExchangeTypes.TOPIC), 
+					name = "Exchange", type = ExchangeTypes.DIRECT), 
 			value = @Queue(name = "bananaSignup"), // 받는놈의 키																																					// 키
-			key = "signup")) // 주는놈의 키
+			key = "auth")) // 주는놈의 키
 	
 	public void receiver(String signUpJson) throws JsonMappingException, JsonProcessingException {
 	    ObjectMapper objectMapper = new ObjectMapper();
-		
+	    
 		SignupRequest signUpRequest = objectMapper.readValue(signUpJson, SignupRequest.class);
-		
-		System.out.println(signUpRequest.toString());			
+				
 
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(),
@@ -63,7 +62,7 @@ class RecvModule {
 							 signUpRequest.getId());
 
 		Set<String> strRoles = signUpRequest.getRole();
-		System.out.println("str:"+strRoles.toString());
+		
 		Set<Role> roles = new HashSet<>();		
 		
 		strRoles.forEach(role -> {
@@ -72,8 +71,7 @@ class RecvModule {
 				Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
 						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 				roles.add(adminRole);
-				break;	
-				
+				break;				
 			default:
 				System.out.println(ERole.ROLE_USER);
 				Role userRole = roleRepository.findByName(ERole.ROLE_USER)
